@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BirdMover : MonoBehaviour
 {
+    [SerializeField] private AudioController audioController;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
@@ -12,7 +13,7 @@ public class BirdMover : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             jump();
         }
@@ -39,6 +40,7 @@ public class BirdMover : MonoBehaviour
         {    
             rb.velocity = Vector3.right * speed;
             rb.AddForce(Vector3.up * jumpForce);
+            audioController.Play_Jump();
         }
     }
 }

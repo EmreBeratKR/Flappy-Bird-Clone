@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class TriggerDetection : MonoBehaviour
 {
-    [SerializeField] private BirdMover birdMover;
     [SerializeField] private GameController gameController;
+    [SerializeField] private AudioController audioController;
+    [SerializeField] private BirdMover birdMover;
 
 
     private void OnTriggerEnter(Collider other)
@@ -15,6 +16,7 @@ public class TriggerDetection : MonoBehaviour
             if (other.tag == "Obstacle Group")
             {
                 gameController.IncreaseScore();
+                audioController.Play_Pass();
             }
         }
     }
@@ -27,6 +29,7 @@ public class TriggerDetection : MonoBehaviour
             {
                 birdMover.Stop();
                 gameController.EndGame();
+                audioController.Play_GameOver();
             }
         }
     }
