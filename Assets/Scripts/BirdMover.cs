@@ -7,6 +7,7 @@ public class BirdMover : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
+    public bool isStarted;
 
 
     private void Update()
@@ -17,21 +18,27 @@ public class BirdMover : MonoBehaviour
         }
     }
 
-    public void Move(GameObject button)
+    public void Move()
     {
+        isStarted = true;
         rb.useGravity = true;
         rb.velocity = Vector3.right * speed;
-        button.SetActive(false);
     }
 
     public void Stop()
     {
+        isStarted = false;
         rb.velocity = Vector3.zero;
+        rb.constraints &= ~RigidbodyConstraints.FreezeRotationX;
+        rb.AddTorque(Vector3.right * 500f);
     }
 
     private void jump()
     {
-        rb.velocity = Vector3.right * speed;
-        rb.AddForce(Vector3.up * jumpForce);
+        if (isStarted)
+        {    
+            rb.velocity = Vector3.right * speed;
+            rb.AddForce(Vector3.up * jumpForce);
+        }
     }
 }

@@ -247,6 +247,7 @@ MonoBehaviour:
   rb: {fileID: 682493409193702018}
   speed: 5
   jumpForce: 400
+  isStarted: 0
 --- !u!114 &5182029737370550942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f480c88f53470453aa786da297b726d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  birdMover: {fileID: 7294248633648084403}
 --- !u!1 &4477182950557768018
 GameObject:
   m_ObjectHideFlags: 0

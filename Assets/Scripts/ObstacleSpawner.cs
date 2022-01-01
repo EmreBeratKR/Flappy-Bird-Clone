@@ -4,20 +4,11 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    [SerializeField] private Vector2 gap;
-    [SerializeField] private Vector2 distance;
-    [SerializeField] private Vector2 height;
-    private ValueRange gapRange;
-    private ValueRange distanceRange;
-    private ValueRange heightRange;
+    [SerializeField] private ObstacleGroup borders;
+    [SerializeField] private ValueRange gapRange;
+    [SerializeField] private ValueRange distanceRange;
+    [SerializeField] private ValueRange heightRange;
 
-
-    private void Start()
-    {
-        gapRange = new ValueRange{min = gap.x, max = gap.y};
-        distanceRange = new ValueRange{min = distance.x, max = distance.y};
-        heightRange = new ValueRange{min = height.x, max = height.y};
-    }
 
     private ObstacleGroup First()
     {
@@ -29,6 +20,21 @@ public class ObstacleSpawner : MonoBehaviour
         return transform.GetChild(transform.childCount-1);
     }
 
+    private void CheckBorders(ObstacleGroup group)
+    {
+        float deltaTop = borders.top.position.y - group.top.position.y;
+        float deltaBottom = group.bottom.position.y - borders.bottom.position.y;
+        if (deltaTop < 0)
+        {
+            group.transform.position += Vector3.down * Mathf.Abs(deltaTop);
+        }
+
+        if (deltaBottom < 0)
+        {
+            group.transform.position += Vector3.up * Mathf.Abs(deltaBottom);
+        }
+    }
+
     public void Pool()
     {
         ObstacleGroup first = First();
@@ -38,16 +44,14 @@ public class ObstacleSpawner : MonoBehaviour
         float randomHeight = Random.Range(heightRange.min, heightRange.max);
 
         first.top.localPosition = Vector3.up * (randomGap / 2f);
-        first.top.localPosition = Vector3.up * (randomGap / 2f);
+        first.bottom.localPosition = Vector3.down * (randomGap / 2f);
 
         first.transform.position = Last().position + new Vector3(randomDistance, randomHeight, 0f);
+        CheckBorders(first);
 
         first.transform.SetAsLastSibling();
     }
 
-    public struct ValueRange
-    {
-        public float min;
-        public float max;
-    }
+    [System.Serializable]
+    public struct ValueRange{public float min, max;}
 }

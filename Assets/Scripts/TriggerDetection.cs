@@ -4,16 +4,30 @@ using UnityEngine;
 
 public class TriggerDetection : MonoBehaviour
 {
+    [SerializeField] private BirdMover birdMover;
+    [SerializeField] private GameController gameController;
+
+
     private void OnTriggerEnter(Collider other)
     {
-        switch (other.tag)
+        if (birdMover.isStarted)
         {
-            case "Obstacle":
-                //Debug.Log("kuş yarra yedi!");
-                break;
-            case "Obstacle Group":
-                //Debug.Log("kuş puan topladu!");
-                break;
+            if (other.tag == "Obstacle Group")
+            {
+                gameController.IncreaseScore();
+            }
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (birdMover.isStarted)
+        {
+            if (other.gameObject.tag == "Obstacle")
+            {
+                birdMover.Stop();
+                gameController.EndGame();
+            }
         }
     }
 }
